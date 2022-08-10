@@ -13,19 +13,18 @@ class DropDownMenuComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 100,
-      height: 55,
+    return Container(
+      decoration: BoxDecoration(border: Border.all(style: BorderStyle.none)),
       child: DropdownButtonFormField<String>(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
         value: null,
         icon: const Icon(Icons.arrow_drop_down),
         isExpanded: true,
         elevation: 16,
-        //style: Theme.of(context).textTheme.headline5,
         hint: FittedBox(
           child: Text(
             hint,
-            style: TextStyle(fontSize: 18, color: Colors.black),
+            style: TextStyle(fontSize: 15, color: Colors.black),
           ),
         ),
         onChanged: onChanged,
@@ -34,7 +33,7 @@ class DropDownMenuComponent extends StatelessWidget {
             value: value,
             child: Text(
               value,
-              style: const TextStyle(color: Colors.black, fontSize: 13),
+              style: const TextStyle(color: Colors.black, fontSize: 15),
             ),
           );
         }).toList(),

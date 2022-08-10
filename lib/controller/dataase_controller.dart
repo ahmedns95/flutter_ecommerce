@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_ecommerce/models/cart_att.dart';
+import 'package:flutter_ecommerce/models/favorite_att.dart';
 import 'package:flutter_ecommerce/models/product.dart';
 import 'package:flutter_ecommerce/services/firestore_services.dart';
 import 'package:flutter_ecommerce/utilities/api_path.dart';
@@ -8,9 +10,15 @@ abstract class Database {
   Stream<List<Product>> salesProductsStream();
   Stream<List<Product>> newProductsStream();
   Stream<List<CartAtt>> cartProduct();
+  Stream<List<FavoriteAtt>> favoriteProduct();
+  Stream<List<Product>> jacketCateg();
+  Stream<List<Product>> pantsCateg();
+  Stream<List<Product>> shirtCateg();
   Future<void> setUserData(User user);
   Future<void> addToCart(CartAtt cart);
   Future<void> deleteFromCart(CartAtt cart);
+  Future<void> addToFavorite(FavoriteAtt fav);
+  void printUid();
 }
 
 class FirestoreDatabase implements Database {
@@ -31,11 +39,29 @@ class FirestoreDatabase implements Database {
         builder: (data, documentId) => Product.fromMap(data!, documentId),
         queryBuilder: (query) => query.where('discountValue', isEqualTo: 0),
       );
+  @override
+  Stream<List<Product>> jacketCateg() => _service.collectionsStream(
+        path: ApiPath.products(),
+        builder: (data, documentId) => Product.fromMap(data!, documentId),
+        queryBuilder: (query) => query.where('category', isEqualTo: 'jacket'),
+      );
+  @override
+  Stream<List<Product>> shirtCateg() => _service.collectionsStream(
+        path: ApiPath.products(),
+        builder: (data, documentId) => Product.fromMap(data!, documentId),
+        queryBuilder: (query) => query.where('category', isEqualTo: 'shirt'),
+      );
+  @override
+  Stream<List<Product>> pantsCateg() => _service.collectionsStream(
+        path: ApiPath.products(),
+        builder: (data, documentId) => Product.fromMap(data!, documentId),
+        queryBuilder: (query) => query.where('category', isEqualTo: 'pant'),
+      );
 //if customer wants to add data
-/*  Future<void> setProduct(Product product) async => _service.setData(
+  Future<void> setProduct(Product product) async => _service.setData(
         path: 'products/${product.id}',
         data: product.toMap(),
-      );*/
+      );
 
   @override
   Future<void> setUserData(User user) async => await _service.setData(
@@ -60,5 +86,20 @@ class FirestoreDatabase implements Database {
   Stream<List<CartAtt>> cartProduct() => _service.collectionsStream(
         path: ApiPath.myCartProduct(uid),
         builder: (data, documentId) => CartAtt.fromMap(data!, documentId),
+      );
+  @override
+  Future<void> addToFavorite(FavoriteAtt fav) async => _service.setData(
+        path: ApiPath.addToFav(uid, fav.id),
+        data: fav.toMap(),
+      );
+  @override
+  void printUid() {
+    debugPrint('Generated id:  $uid');
+  }
+
+  @override
+  Stream<List<FavoriteAtt>> favoriteProduct() => _service.collectionsStream(
+        path: ApiPath.myFavProduct(uid),
+        builder: (data, documentId) => FavoriteAtt.fromMap(data!, documentId),
       );
 }

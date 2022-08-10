@@ -43,36 +43,36 @@ class _CartItemState extends State<CartItem> {
   @override
   Widget build(BuildContext context) {
     // final _cartAttr = Provider.of<CartAtt>(context);
-    final database = Provider.of<Database>(context);
-
-    //  int subtotal = _cartAttr.price * _cartAttr.quantity;
+    // final database = Provider.of<Database>(context);
+    // int subtotal = _cartAttr.price * _cartAttr.quantity;
+    final Size size = MediaQuery.of(context).size;
     return Column(
       children: [
         Container(
-          height: 120,
+          height: size.height * 0.12,
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.shade300,
                   spreadRadius: 1,
                   blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
+                  offset: const Offset(0, 3), // changes position of shadow
                 ),
               ],
-              color: Colors.grey.shade200,
-              borderRadius: const BorderRadius.all(Radius.circular(20))),
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(15))),
           child: Row(
             children: <Widget>[
-              Container(
+              SizedBox(
                 width: 90,
-                height: 160,
+                height: size.height * 0.12,
                 child: Image.network(
                   widget.product.imgUrl,
                   fit: BoxFit.scaleDown,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(top: 5),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +81,7 @@ class _CartItemState extends State<CartItem> {
                       widget.product.title,
                       style: const TextStyle(fontSize: 16),
                     ),
-                    const SizedBox(height: 10),
+                    // const SizedBox(height: 8),
                     Row(
                       children: [
                         const Text(
@@ -101,30 +101,33 @@ class _CartItemState extends State<CartItem> {
                       children: <Widget>[
                         IconButton(
                           onPressed: () {
-                            deletFromCart(database);
-                            /* _cartProvider.reductCartItem(
+                            setState(() {
+                              widget.product.quantity--;
+                            });
+/*
+                              _cartProvider.reductCartItem(
                             productId,
                             _cartAttr.price,
                             _cartAttr.title,
-                            _cartAttr.imageUrl);*/
+                            _cartAttr.imageUrl); */
                           },
                           icon: const Icon(
                             CupertinoIcons.minus,
-                            size: 25,
+                            size: 20,
                           ),
                         ),
                         Card(
-                          elevation: 5,
                           child: Container(
                             width: 40,
                             height: 20,
                             decoration: const BoxDecoration(
                               color: Colors.red,
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Text(
-                                '1',
-                                style: TextStyle(
+                                widget.product.quantity.toString(),
+                                style: const TextStyle(
+                                  fontSize: 12,
                                   color: Colors.white,
                                 ),
                               ),
@@ -133,16 +136,18 @@ class _CartItemState extends State<CartItem> {
                         ),
                         IconButton(
                           onPressed: () {
-                            //  product.quantity ++;
-                            /*_cartProvider.addProductToCart(
+                            setState(() {
+                              widget.product.quantity++;
+                            });
+                            /*      _cartProvider.addProductToCart(
                             productId,
                             _cartAttr.price,
                             _cartAttr.title,
-                            _cartAttr.imageUrl);*/
+                            _cartAttr.imageUrl); */
                           },
                           icon: const Icon(
                             CupertinoIcons.add,
-                            size: 25,
+                            size: 20,
                           ),
                         ),
                       ],
@@ -152,18 +157,16 @@ class _CartItemState extends State<CartItem> {
               ),
               //SizedBox(width: 50),
               Padding(
-                padding: const EdgeInsets.only(top: 20, left: 50),
+                padding: const EdgeInsets.only(left: 60),
                 child: Text(
-                  '${widget.product.price}\$',
+                  '${widget.product.price * widget.product.quantity}\$',
                   style: const TextStyle(fontSize: 16),
                 ),
               )
             ],
           ),
         ),
-        SizedBox(
-          height: 6,
-        )
+        SizedBox(height: size.height * .01),
       ],
     );
   }

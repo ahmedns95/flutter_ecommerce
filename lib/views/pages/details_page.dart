@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/models/cart_att.dart';
+import 'package:flutter_ecommerce/models/favorite_att.dart';
 import 'package:flutter_ecommerce/views/widgets/drop_down_menu.dart';
 import 'package:flutter_ecommerce/views/widgets/main_button.dart';
 import 'package:provider/provider.dart';
@@ -39,11 +40,36 @@ class _DetailsPageState extends State<DetailsPage> {
         // quantity: dropdownValueQ.toInt(),
       );
       await database.addToCart(addToCartProduct);
+      Navigator.pop(context);
     } catch (e) {
       return MainDialog(
         context: context,
         title: 'Error',
         content: 'Couldn\'t add to the cart, please try again!',
+      ).showAlertDialog();
+    }
+  }
+
+  Future<void> _addToFav(Database database) async {
+    try {
+      final addToFavProduct = FavoriteAtt(
+        id: documentIdFromLocalData(),
+        title: widget.product.title,
+        price: widget.product.price,
+        size: dropdownValueSize,
+        imgUrl: widget.product.imgUrl,
+        discountValue: widget.product.discountValue,
+        productId: widget.product.id,
+        color: dropdownValueColor,
+        // quantity: dropdownValueQ.toInt(),
+      );
+      await database.addToFavorite(addToFavProduct);
+      //Navigator.pop(context);
+    } catch (e) {
+      return MainDialog(
+        context: context,
+        title: 'Error',
+        content: 'Couldn\'t add to the fav, please try again!',
       ).showAlertDialog();
     }
   }
@@ -159,11 +185,9 @@ class _DetailsPageState extends State<DetailsPage> {
                           height: 50,
                           width: 50,
                           child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                isFavorite = !isFavorite;
-                              });
-                            },
+                            onTap: () => _addToFav(database),
+                            // isFavorite = !isFavorite;
+
                             child: DecoratedBox(
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
@@ -211,10 +235,9 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    'dummy description dummy description dummy description dummy description dummy description dummy dummy description dummy description dummy description dummy description dummy description dummy'
-                    'description dummy description dummy description dummy description dummy description description ',
-                    style: TextStyle(fontSize: 15),
+                  Text(
+                    widget.product.description,
+                    style: const TextStyle(fontSize: 15),
                   ),
                   const SizedBox(height: 10),
                   SizedBox(

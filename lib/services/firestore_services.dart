@@ -20,7 +20,7 @@ class FirestoreServices {
 
   Future<void> deleteData({
     required String path,
-    required Map<String, dynamic> data,
+    required Map<String, dynamic> data, //added
   }) async {
     final reference = _fireStore.doc(path);
     debugPrint('Path of deleting data: $path');

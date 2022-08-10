@@ -1,14 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ecommerce/models/cart_att.dart';
 import 'package:flutter_ecommerce/views/pages/account_page.dart';
 import 'package:flutter_ecommerce/views/pages/cart_page.dart';
-import 'package:flutter_ecommerce/views/pages/details_page.dart';
 import 'package:flutter_ecommerce/views/pages/home_page.dart';
+import 'package:flutter_ecommerce/views/pages/shopping_screen.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-import 'package:provider/provider.dart';
-
-import '../../models/product.dart';
+import 'favorite_page.dart';
 
 class bottomNavbar extends StatefulWidget {
   const bottomNavbar({Key? key}) : super(key: key);
@@ -24,9 +21,9 @@ class _bottomNavbarState extends State<bottomNavbar> {
     List<Widget> _buildScreens() {
       return [
         HomePage(),
-        Container(),
+        ShoppingPage(),
         CartPage(),
-        Container(),
+        FavoritePage(),
         const AccountPage(),
       ];
     }

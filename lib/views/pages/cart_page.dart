@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/controller/dataase_controller.dart';
 import 'package:flutter_ecommerce/models/cart.dart';
@@ -11,15 +12,22 @@ class CartPage extends StatelessWidget {
   const CartPage({
     Key? key,
   }) : super(key: key);
+  void removeAtIndex(int index, Map<String, CartAtt> cart) {
+    for (int i = 0; i < cart.length; i++) {
+      //cart[index].
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<Database>(context);
     final CartAtt cart;
-    int total = 0;
+    double total = 0;
+    Size size = MediaQuery.of(context).size;
+    // final database = Provider.of<Database>(context);
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,61 +40,84 @@ class CartPage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 530,
+              height: size.height * .6,
               child: StreamBuilder<List<CartAtt>>(
                 stream: database.cartProduct(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
-                    final products = snapshot.data;
-                    if (products == null || products.isEmpty) {
+                    final product = snapshot.data;
+                    if (product == null || product.isEmpty) {
                       return Center(child: CartEmpty());
                     }
                     return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: products.length,
-                      itemBuilder: (_, index) =>
-                          CartItem(product: products[index]),
-                    );
+                        scrollDirection: Axis.vertical,
+                        itemCount: product.length,
+                        itemBuilder: (_, index) {
+                          total += (product[index].price *
+                              (product[index].price * product[index].quantity));
+                          return CartItem(product: product[index]);
+                        });
                   } else {
                     return const Center(child: CircularProgressIndicator());
                   }
                 },
               ),
             ),
-            Row(
-              children: const [
-                Text(
-                  'Total amount: ',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
+            Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade300,
+                    spreadRadius: 20,
+                    blurRadius: 150,
                   ),
-                ),
-                Spacer(),
-                Text(
-                  '\$0',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.red,
+                ],
+              ),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Text(
+                        'Total amount: ',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        '\$$total',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: size.height * .02,
+                  ),
+                  Center(
+                    child: InkWell(
+                        onTap: () {},
+                        child: Container(
+                            height: 50,
+                            width: 300,
+                            decoration: const BoxDecoration(
+                                color: Colors.red,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30.0))),
+                            child: const Center(
+                              child: Text(
+                                'CHECK OUT',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ))),
+                  )
+                ],
+              ),
             ),
-            Center(
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(primary: Colors.red),
-                  onPressed: () {},
-                  child: Container(
-                      height: 30,
-                      width: 300,
-                      decoration: const BoxDecoration(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(30.0))),
-                      child: const Center(
-                        child: Text('Check out'),
-                      ))),
-            )
           ],
         ),
       ),

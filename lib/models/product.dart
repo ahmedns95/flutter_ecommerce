@@ -1,7 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
-import '../utilities/assets.dart';
-
 class Product {
   final String id;
   final String title;
@@ -9,12 +5,14 @@ class Product {
   final String imgUrl;
   final int discountValue;
   final String category;
+  final String description;
   final int? rate;
 
   Product({
     required this.id,
     required this.title,
     required this.price,
+    required this.description,
     required this.imgUrl,
     this.discountValue = 0,
     this.category = 'Other',
@@ -25,6 +23,7 @@ class Product {
     return {
       'id': id,
       'title': title,
+      'description': description,
       'price': price,
       'imgUrl': imgUrl,
       'discountValue': discountValue,
@@ -42,6 +41,7 @@ class Product {
       discountValue: map['discountValue'] as int,
       category: map['category'] as String,
       rate: map['rate'] as int,
+      description: map['description'] as String,
     );
   }
 
