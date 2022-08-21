@@ -2,18 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/models/cart_att.dart';
 import 'package:flutter_ecommerce/models/product.dart';
+import 'package:provider/provider.dart';
 
-class Cart {
+import '../controller/dataase_controller.dart';
+
+class Cart with ChangeNotifier {
   Map<String, CartAtt> _cartItems = {};
 
   int price = 00;
-
   Map<String, CartAtt> get getCartItem {
     return {..._cartItems};
   }
 
   double get totalAmount {
-    var total = 0.0;
+    var total = 10.0;
 
     _cartItems.forEach((key, value) {
       total += value.price * value.quantity;

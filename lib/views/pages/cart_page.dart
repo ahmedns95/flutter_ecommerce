@@ -4,27 +4,37 @@ import 'package:flutter_ecommerce/controller/dataase_controller.dart';
 import 'package:flutter_ecommerce/models/cart.dart';
 import 'package:flutter_ecommerce/models/cart_att.dart';
 import 'package:flutter_ecommerce/views/widgets/cart_item.dart';
+import 'package:flutter_ecommerce/views/widgets/main_button.dart';
 import 'package:provider/provider.dart';
 
+import '../../utilities/routes.dart';
 import '../widgets/empty_cart.dart';
 
-class CartPage extends StatelessWidget {
-  const CartPage({
-    Key? key,
-  }) : super(key: key);
-  void removeAtIndex(int index, Map<String, CartAtt> cart) {
-    for (int i = 0; i < cart.length; i++) {
-      //cart[index].
+class CartPage extends StatefulWidget {
+  const CartPage({Key? key}) : super(key: key);
+
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  int totalAmount = 0;
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    final myProducts =
+        await Provider.of<Database>(context, listen: false).cartProduct().first;
+    for (var element in myProducts) {
+      setState(() {
+        totalAmount += element.price;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<Database>(context);
-    final CartAtt cart;
-    double total = 0;
     Size size = MediaQuery.of(context).size;
-    // final database = Provider.of<Database>(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -45,18 +55,20 @@ class CartPage extends StatelessWidget {
                 stream: database.cartProduct(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
-                    final product = snapshot.data;
-                    if (product == null || product.isEmpty) {
+                    final cartProducts = snapshot.data;
+                    if (cartProducts == null || cartProducts.isEmpty) {
                       return Center(child: CartEmpty());
                     }
+
                     return ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: product.length,
-                        itemBuilder: (_, index) {
-                          total += (product[index].price *
-                              (product[index].price * product[index].quantity));
-                          return CartItem(product: product[index]);
-                        });
+                      //shrinkWrap: false,
+                      padding: const EdgeInsets.all(10),
+                      scrollDirection: Axis.vertical,
+                      itemCount: cartProducts.length,
+                      itemBuilder: (_, index) {
+                        return CartItem(product: cartProducts[index]);
+                      },
+                    );
                   } else {
                     return const Center(child: CircularProgressIndicator());
                   }
@@ -86,35 +98,34 @@ class CartPage extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      Text(
-                        '\$$total',
+                      Center(
+                        child: Text(
+                          '\$${totalAmount.toString()}',
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      )
+                      /* Text(
+                        '\$${cart.price}',
                         style: const TextStyle(
                           fontSize: 20,
                           color: Colors.red,
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                   SizedBox(
                     height: size.height * .02,
                   ),
                   Center(
-                    child: InkWell(
-                        onTap: () {},
-                        child: Container(
-                            height: 50,
-                            width: 300,
-                            decoration: const BoxDecoration(
-                                color: Colors.red,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(30.0))),
-                            child: const Center(
-                              child: Text(
-                                'CHECK OUT',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ))),
-                  )
+                      child: MainButton(
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true).pushNamed(
+                        AppRoutes.checkoutPageRoutes,
+                        arguments: database,
+                      );
+                    },
+                    text: 'C H E C K O U T',
+                  ))
                 ],
               ),
             ),

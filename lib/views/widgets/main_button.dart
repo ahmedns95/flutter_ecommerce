@@ -9,18 +9,20 @@ class MainButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 50.0,
-      child: ElevatedButton(
-        onPressed: onTap,
-        style: ElevatedButton.styleFrom(
-          primary: Theme.of(context).primaryColor,
-        ),
-        child: Text(
-          text,
-        ),
-      ),
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+          height: 50,
+          width: 350,
+          decoration: const BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.all(Radius.circular(30.0))),
+          child: Center(
+            child: Text(
+              text,
+              style: const TextStyle(color: Colors.white),
+            ),
+          )),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/models/product.dart';
@@ -8,48 +9,32 @@ import '../../models/cart_att.dart';
 import '../../utilities/const.dart';
 import 'main_dialog.dart';
 
-class CartItem extends StatefulWidget {
+class CartItem extends StatefulWidget with ChangeNotifier {
   final CartAtt product;
-  const CartItem({Key? key, required this.product}) : super(key: key);
+  CartItem({Key? key, required this.product}) : super(key: key);
 
   @override
   State<CartItem> createState() => _CartItemState();
 }
 
-class _CartItemState extends State<CartItem> {
-  Future<void> deletFromCart(Database database) async {
-    try {
-      final addToCartProduct = CartAtt(
-        id: documentIdFromLocalData(),
-        title: widget.product.title,
-        price: widget.product.price.toInt(),
-        size: 'M',
-        imgUrl: widget.product.imgUrl,
-        discountValue: widget.product.discountValue,
-        productId: widget.product.id,
-        color: 'Black',
-        // quantity: dropdownValueQ.toInt(),
-      );
-      await database.deleteFromCart(addToCartProduct);
-    } catch (e) {
-      return MainDialog(
-        context: context,
-        title: 'Error',
-        content: 'Couldn\'t add to the cart, please try again!',
-      ).showAlertDialog();
-    }
-  }
+final CollectionReference _products =
+    FirebaseFirestore.instance.collection('addToCart');
+Future<void> _delete(String productId) async {
+  await _products.doc(productId).delete();
+}
 
+class _CartItemState extends State<CartItem> {
   @override
   Widget build(BuildContext context) {
     // final _cartAttr = Provider.of<CartAtt>(context);
-    // final database = Provider.of<Database>(context);
+    final database = Provider.of<Database>(context);
     // int subtotal = _cartAttr.price * _cartAttr.quantity;
     final Size size = MediaQuery.of(context).size;
+
     return Column(
       children: [
         Container(
-          height: size.height * 0.12,
+          height: size.height * 0.14,
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -72,16 +57,31 @@ class _CartItemState extends State<CartItem> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 5),
+                padding: const EdgeInsets.all(0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.product.title,
-                      style: const TextStyle(fontSize: 16),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          widget.product.title,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                        Positioned(
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          child: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _delete(widget.product.id);
+                                });
+                              },
+                              icon: Icon(Icons.delete_forever)),
+                        ),
+                      ],
                     ),
-                    // const SizedBox(height: 8),
                     Row(
                       children: [
                         const Text(
@@ -100,10 +100,36 @@ class _CartItemState extends State<CartItem> {
                     Row(
                       children: <Widget>[
                         IconButton(
+                          focusColor: Colors.black,
                           onPressed: () {
-                            setState(() {
+                            StreamBuilder<List<CartAtt>>(
+                              stream: database.cartProduct(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.active) {
+                                  final cartProducts =
+                                      snapshot.data as List<CartAtt>;
+                                  if (cartProducts.isEmpty) {
+                                    return const Center(
+                                      child: Text(''),
+                                    );
+                                  }
+                                  return Text(
+                                    '\$${cartProducts.isEmpty ? cartProducts.map<int>((e) => e.quantity++) : 0}',
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.red,
+                                    ),
+                                  );
+                                } else {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              },
+                            );
+                            /* setState(() {
                               widget.product.quantity--;
-                            });
+                            });*/
 /*
                               _cartProvider.reductCartItem(
                             productId,
@@ -135,6 +161,7 @@ class _CartItemState extends State<CartItem> {
                           ),
                         ),
                         IconButton(
+                          focusColor: Colors.grey,
                           onPressed: () {
                             setState(() {
                               widget.product.quantity++;
@@ -150,19 +177,29 @@ class _CartItemState extends State<CartItem> {
                             size: 20,
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 40),
+                          child: Text(
+                            '${(widget.product.price - (widget.product.price * (widget.product.discountValue / 100))) * widget.product.quantity}\$',
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
               //SizedBox(width: 50),
-              Padding(
-                padding: const EdgeInsets.only(left: 60),
-                child: Text(
-                  '${widget.product.price * widget.product.quantity}\$',
-                  style: const TextStyle(fontSize: 16),
+              /* Flexible(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 55),
+                  child: Text(
+                    '${(widget.product.price - (widget.product.price * (widget.product.discountValue / 100))) * widget.product.quantity}\$',
+                    style: const TextStyle(fontSize: 16),
+                  ),
                 ),
-              )
+              )*/
             ],
           ),
         ),

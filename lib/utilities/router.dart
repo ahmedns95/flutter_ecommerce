@@ -7,7 +7,9 @@ import 'package:flutter_ecommerce/views/pages/cart_page.dart';
 import 'package:flutter_ecommerce/views/pages/details_page.dart';
 import 'package:flutter_ecommerce/views/pages/landing_page.dart';
 import 'package:flutter_ecommerce/views/pages/auth_page.dart';
+import 'package:flutter_ecommerce/views/pages/shopping_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_ecommerce/views/pages/checkout_page.dart';
 
 Route<dynamic> onGenerate(RouteSettings setting) {
   switch (setting.name) {
@@ -22,6 +24,14 @@ Route<dynamic> onGenerate(RouteSettings setting) {
         settings: setting,
       );
 
+    case AppRoutes.checkoutPageRoutes:
+      final database = setting.arguments as Database;
+      return CupertinoPageRoute(
+        builder: (_) => Provider<Database>.value(
+            value: database, child: const ChckoutPage()),
+        settings: setting,
+      );
+
     case AppRoutes.detailsPageRoutes:
       final args = setting.arguments as Map<String, dynamic>;
       final product = args['product'];
@@ -33,11 +43,18 @@ Route<dynamic> onGenerate(RouteSettings setting) {
         ),
         settings: setting,
       );
-/*    case AppRoutes.CartPageRoutes:
+
+    case AppRoutes.ShoppingPageRoutes:
+      final args = setting.arguments as Map<String, dynamic>;
+      final product = args['product'];
+      final database = args['database'];
       return CupertinoPageRoute(
-        builder: (_) => const CartPage(),
+        builder: (_) => Provider<Database>.value(
+          value: database,
+          // child: const ShoppingPage(),
+        ),
         settings: setting,
-      );*/
+      );
 
     case AppRoutes.landingPageRoutes:
     default:

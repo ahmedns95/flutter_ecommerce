@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/models/category_att.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/dataase_controller.dart';
 import '../../models/product.dart';
+import '../widgets/category_widget.dart';
 import '../widgets/list_item_home.dart';
+import '../widgets/shopping_list_widget.dart';
 
 class ShoppingPage extends StatefulWidget {
   const ShoppingPage({Key? key}) : super(key: key);
@@ -17,12 +20,12 @@ class _ShoppingPageState extends State<ShoppingPage> {
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<Database>(context);
-    final database2 = Provider.of<Database>(context);
-    final database3 = Provider.of<Database>(context);
     Size size = MediaQuery.of(context).size;
+    bool isEnable = false;
+    CategoryAtt categoryAtt;
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,31 +36,50 @@ class _ShoppingPageState extends State<ShoppingPage> {
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: size.height * .019),
-            Row(
-              children: [
-                CategoryWidget(
-                  onTap: () {},
-                  size: size,
-                  title: 'Jackets',
-                ),
-                CategoryWidget(
-                  onTap: () {},
-                  size: size,
-                  title: 'T-Shirts',
-                ),
-                CategoryWidget(
-                  onTap: () {},
-                  size: size,
-                  title: 'Pants',
-                ),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Row(
+                children: [
+                  const Spacer(),
+                  CategoryWidget(
+                    onTap: () {
+                      setState(() {
+                        isEnable = false;
+                      });
+                    },
+                    size: size,
+                    title: 'Jackets',
+                  ),
+                  const Spacer(),
+                  CategoryWidget(
+                    onTap: () {
+                      setState(() {
+                        isEnable = true;
+                      });
+                    },
+                    size: size,
+                    title: 'T-Shirts',
+                  ),
+                  const Spacer(),
+                  CategoryWidget(
+                    onTap: () {
+                      setState(() {
+                        CategoryAtt.shirts;
+                      });
+                    },
+                    size: size,
+                    title: 'Pants',
+                  ),
+                ],
+              ),
             ),
             SizedBox(
-              height: 130,
+              height: 600,
               child: StreamBuilder<List<Product>>(
                 stream: database.jacketCateg(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active) {
+                  if (snapshot.connectionState == ConnectionState.active &&
+                      (isEnable == false)) {
                     final products = snapshot.data;
                     if (products == null || products.isEmpty) {
                       return const Center(
@@ -67,62 +89,8 @@ class _ShoppingPageState extends State<ShoppingPage> {
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
                       itemCount: products.length,
-                      itemBuilder: (_, index) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade300,
-                                  spreadRadius: 1,
-                                  blurRadius: 7,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                              color: Colors.white,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(18))),
-                          //     color: Colors.white,
-                          child: Row(
-                            children: <Widget>[
-                              Column(
-                                children: <Widget>[
-                                  Container(
-                                    //color: Colors.grey.shade300,
-                                    width: 90,
-                                    height: 100,
-                                    child: Image.network(
-                                      products[index].imgUrl,
-                                      fit: BoxFit.scaleDown,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 20),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    products[index].title,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    products[index].category,
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text('\$${products[index].price.toString()}'),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      itemBuilder: (_, index) =>
+                          SoppingListWidget(products: products[index]),
                     );
                   } else {
                     return const Center(child: CircularProgressIndicator());
@@ -130,10 +98,10 @@ class _ShoppingPageState extends State<ShoppingPage> {
                 },
               ),
             ),
-            SizedBox(
-              height: 600,
+            /*SizedBox(
+              height: 360,
               child: StreamBuilder<List<Product>>(
-                stream: database2.pantsCateg(),
+                stream: database.pantsCateg(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
                     final products = snapshot.data;
@@ -145,62 +113,8 @@ class _ShoppingPageState extends State<ShoppingPage> {
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
                       itemCount: products.length,
-                      itemBuilder: (_, index) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade300,
-                                  spreadRadius: 1,
-                                  blurRadius: 7,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                              color: Colors.white,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(18))),
-                          //     color: Colors.white,
-                          child: Row(
-                            children: <Widget>[
-                              Column(
-                                children: <Widget>[
-                                  Container(
-                                    //color: Colors.grey.shade300,
-                                    width: 90,
-                                    height: 100,
-                                    child: Image.network(
-                                      products[index].imgUrl,
-                                      fit: BoxFit.scaleDown,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 20),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    products[index].title,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    products[index].category,
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text('\$${products[index].price.toString()}'),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      itemBuilder: (_, index) =>
+                          SoppingListWidget(products: products[index]),
                     );
                   } else {
                     return const Center(child: CircularProgressIndicator());
@@ -209,9 +123,9 @@ class _ShoppingPageState extends State<ShoppingPage> {
               ),
             ),
             SizedBox(
-              height: 600,
+              height: 300,
               child: StreamBuilder<List<Product>>(
-                stream: database3.shirtCateg(),
+                stream: database.shirtCateg(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
                     final products = snapshot.data;
@@ -220,105 +134,20 @@ class _ShoppingPageState extends State<ShoppingPage> {
                         child: Text('No data available'),
                       );
                     }
+                    //  querySelector('shirts');
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
                       itemCount: products.length,
-                      itemBuilder: (_, index) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade300,
-                                  spreadRadius: 1,
-                                  blurRadius: 7,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                              color: Colors.white,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(18))),
-                          //     color: Colors.white,
-                          child: Row(
-                            children: <Widget>[
-                              Column(
-                                children: <Widget>[
-                                  Container(
-                                    //color: Colors.grey.shade300,
-                                    width: 90,
-                                    height: 100,
-                                    child: Image.network(
-                                      products[index].imgUrl,
-                                      fit: BoxFit.scaleDown,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 20),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    products[index].title,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    products[index].category,
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text('\$${products[index].price.toString()}'),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      itemBuilder: (_, index) =>
+                          SoppingListWidget(products: products[index]),
                     );
                   } else {
                     return const Center(child: CircularProgressIndicator());
                   }
                 },
               ),
-            ),
+            ),*/
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class CategoryWidget extends StatelessWidget {
-  const CategoryWidget({
-    Key? key,
-    required this.size,
-    required this.title,
-    required this.onTap,
-  }) : super(key: key);
-  final Function() onTap;
-  final Size size;
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        height: size.height * .040,
-        width: size.width * .29,
-        decoration: const BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.all(Radius.circular(20))),
-        child: Center(
-          child: Text(
-            title,
-            style: TextStyle(color: Colors.white),
-          ),
         ),
       ),
     );

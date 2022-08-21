@@ -25,7 +25,7 @@ class _DetailsPageState extends State<DetailsPage> {
   late String dropdownValueSize;
   late String dropdownValueColor;
   late int dropdownValueQ;
-
+  late int total = 1;
   Future<void> _addToCart(Database database) async {
     try {
       final addToCartProduct = CartAtt(
@@ -37,15 +37,18 @@ class _DetailsPageState extends State<DetailsPage> {
         discountValue: widget.product.discountValue,
         productId: widget.product.id,
         color: dropdownValueColor,
+        quantity: total++,
         // quantity: dropdownValueQ.toInt(),
       );
+
       await database.addToCart(addToCartProduct);
+
       Navigator.pop(context);
     } catch (e) {
       return MainDialog(
         context: context,
         title: 'Error',
-        content: 'Couldn\'t add to the cart, please try again!',
+        content: 'Couldn\'t add to the cart, please try again!${e.toString()}',
       ).showAlertDialog();
     }
   }
@@ -60,7 +63,7 @@ class _DetailsPageState extends State<DetailsPage> {
         imgUrl: widget.product.imgUrl,
         discountValue: widget.product.discountValue,
         productId: widget.product.id,
-        color: dropdownValueColor,
+        // color: dropdownValueColor,
         // quantity: dropdownValueQ.toInt(),
       );
       await database.addToFavorite(addToFavProduct);
@@ -78,7 +81,6 @@ class _DetailsPageState extends State<DetailsPage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final database = Provider.of<Database>(context);
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -125,7 +127,7 @@ class _DetailsPageState extends State<DetailsPage> {
               widget.product.imgUrl,
               height: size.height * 0.5,
               width: double.infinity,
-              fit: BoxFit.contain,
+              fit: BoxFit.scaleDown,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
@@ -136,7 +138,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   Row(
                     children: [
                       Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: DropDownMenuComponent(
                           items: const ['S', 'M', 'L', 'XL', 'XXL'],
                           hint: 'Size',
@@ -149,7 +151,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       ),
                       const SizedBox(width: 10),
                       Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: DropDownMenuComponent(
                           items: const ['Black', 'Red', 'White'],
                           hint: 'Color',
@@ -161,6 +163,30 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                       ),
                       const SizedBox(width: 10),
+                      /*Expanded(
+                        flex: 1,
+                        child: DropDownMenuComponent(
+                          items: const [
+                            '1',
+                            '2',
+                            '3',
+                            '4',
+                            '5',
+                            '6',
+                            '7',
+                            '8',
+                            '9',
+                            '10'
+                          ],
+                          hint: 'Q',
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownValueQ = newValue! as int;
+                            });
+                          },
+                        ),
+                      ),*/
+
                       /* Expanded(
                         flex: 1,
                         child: DropDownMenuComponent(
@@ -186,8 +212,6 @@ class _DetailsPageState extends State<DetailsPage> {
                           width: 50,
                           child: InkWell(
                             onTap: () => _addToFav(database),
-                            // isFavorite = !isFavorite;
-
                             child: DecoratedBox(
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
@@ -243,14 +267,11 @@ class _DetailsPageState extends State<DetailsPage> {
                   SizedBox(
                     width: double.infinity,
                     height: 50.0,
-                    child: ElevatedButton(
-                      onPressed: () => _addToCart(database),
-                      style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).primaryColor,
-                      ),
-                      child: const Text(
-                        'Add to cart',
-                      ),
+                    child: MainButton(
+                      onTap: () {
+                        _addToCart(database);
+                      },
+                      text: 'Add to cart',
                     ),
                   ),
                   const SizedBox(height: 30),

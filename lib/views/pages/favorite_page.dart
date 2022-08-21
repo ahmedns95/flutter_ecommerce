@@ -7,6 +7,8 @@ import 'package:flutter_ecommerce/views/widgets/cart_item.dart';
 import 'package:flutter_ecommerce/views/widgets/list_item_home.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/fav_list.dart';
+
 class FavoritePage extends StatelessWidget {
   const FavoritePage({Key? key}) : super(key: key);
 
@@ -23,8 +25,8 @@ class FavoritePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 100),
-            StreamBuilder<List<CartAtt>>(
-              stream: database.cartProduct(),
+            StreamBuilder<List<FavoriteAtt>>(
+              stream: database.favoriteProduct(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
                   final products = snapshot.data;
@@ -37,8 +39,9 @@ class FavoritePage extends StatelessWidget {
                     scrollDirection: Axis.vertical,
                     itemCount: products.length,
                     shrinkWrap: true,
-                    itemBuilder: (_, index) =>
-                        CartItem(product: products[index]),
+                    itemBuilder: (_, index) => FavListWidget(
+                      products: products[index],
+                    ),
                   );
                 } else {
                   return const Center(child: CircularProgressIndicator());

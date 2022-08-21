@@ -4,6 +4,8 @@ import 'package:flutter_ecommerce/models/favorite_att.dart';
 import 'package:flutter_ecommerce/models/product.dart';
 import 'package:flutter_ecommerce/services/firestore_services.dart';
 import 'package:flutter_ecommerce/utilities/api_path.dart';
+import '../models/category_att.dart';
+import '../models/delivery_method.dart';
 import '../models/user_model.dart';
 
 abstract class Database {
@@ -11,6 +13,7 @@ abstract class Database {
   Stream<List<Product>> newProductsStream();
   Stream<List<CartAtt>> cartProduct();
   Stream<List<FavoriteAtt>> favoriteProduct();
+  Stream<List<DeliveryMethod>> deliveryMethodsStream();
   Stream<List<Product>> jacketCateg();
   Stream<List<Product>> pantsCateg();
   Stream<List<Product>> shirtCateg();
@@ -25,6 +28,7 @@ class FirestoreDatabase implements Database {
   final String uid;
   final _service = FirestoreServices.instance; //services/fireStoreService
   FirestoreDatabase(this.uid);
+  CategoryAtt? _categoryAtt;
 
   @override
   Stream<List<Product>> salesProductsStream() => _service.collectionsStream(
@@ -39,18 +43,22 @@ class FirestoreDatabase implements Database {
         builder: (data, documentId) => Product.fromMap(data!, documentId),
         queryBuilder: (query) => query.where('discountValue', isEqualTo: 0),
       );
+
   @override
   Stream<List<Product>> jacketCateg() => _service.collectionsStream(
         path: ApiPath.products(),
         builder: (data, documentId) => Product.fromMap(data!, documentId),
-        queryBuilder: (query) => query.where('category', isEqualTo: 'jacket'),
+        queryBuilder: (query) =>
+            query.where('category', isEqualTo: _categoryAtt),
       );
+
   @override
   Stream<List<Product>> shirtCateg() => _service.collectionsStream(
         path: ApiPath.products(),
         builder: (data, documentId) => Product.fromMap(data!, documentId),
         queryBuilder: (query) => query.where('category', isEqualTo: 'shirt'),
       );
+
   @override
   Stream<List<Product>> pantsCateg() => _service.collectionsStream(
         path: ApiPath.products(),
@@ -87,11 +95,13 @@ class FirestoreDatabase implements Database {
         path: ApiPath.myCartProduct(uid),
         builder: (data, documentId) => CartAtt.fromMap(data!, documentId),
       );
+
   @override
   Future<void> addToFavorite(FavoriteAtt fav) async => _service.setData(
         path: ApiPath.addToFav(uid, fav.id),
         data: fav.toMap(),
       );
+
   @override
   void printUid() {
     debugPrint('Generated id:  $uid');
@@ -102,4 +112,10 @@ class FirestoreDatabase implements Database {
         path: ApiPath.myFavProduct(uid),
         builder: (data, documentId) => FavoriteAtt.fromMap(data!, documentId),
       );
+  @override
+  Stream<List<DeliveryMethod>> deliveryMethodsStream() =>
+      _service.collectionsStream(
+          path: ApiPath.deliveryMethods(),
+          builder: (data, documentId) =>
+              DeliveryMethod.fromMap(data!, documentId));
 }

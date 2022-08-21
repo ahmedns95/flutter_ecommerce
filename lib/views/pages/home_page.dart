@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/controller/dataase_controller.dart';
 import 'package:flutter_ecommerce/models/product.dart';
 import 'package:flutter_ecommerce/utilities/assets.dart';
+import 'package:flutter_ecommerce/views/pages/shopping_screen.dart';
 import 'package:flutter_ecommerce/views/widgets/list_item_home.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_ecommerce/views/widgets/build_header_list.dart';
+
+import '../../utilities/routes.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -102,7 +105,10 @@ class HomePage extends StatelessWidget {
                   title: 'New',
                   description: 'Super New Products!!',
                   context: context,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed(AppRoutes.ShoppingPageRoutes);
+                  },
                 ),
                 const SizedBox(height: 8.0),
                 SizedBox(
