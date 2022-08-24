@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/views/pages/cart_page.dart';
 
 class OrderSummaryComponent extends StatelessWidget {
   final String title;

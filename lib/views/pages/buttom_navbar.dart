@@ -20,10 +20,10 @@ class _bottomNavbarState extends State<bottomNavbar> {
     final _controller = PersistentTabController();
     List<Widget> _buildScreens() {
       return [
-        HomePage(),
-        ShoppingPage(),
-        CartPage(),
-        FavoritePage(),
+        const HomePage(),
+        const ShoppingPage(),
+        const CartPage(),
+        const FavoritePage(),
         const AccountPage(),
       ];
     }
@@ -33,31 +33,31 @@ class _bottomNavbarState extends State<bottomNavbar> {
         PersistentBottomNavBarItem(
           icon: const Icon(CupertinoIcons.home),
           title: ("Home"),
-          activeColorPrimary: CupertinoColors.destructiveRed,
+          activeColorPrimary: Color(0xFFDB3022),
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(CupertinoIcons.bag_fill),
           title: ("shop"),
-          activeColorPrimary: CupertinoColors.destructiveRed,
+          activeColorPrimary: Color(0xFFDB3022),
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(CupertinoIcons.shopping_cart),
           title: ("cart"),
-          activeColorPrimary: CupertinoColors.destructiveRed,
+          activeColorPrimary: Color(0xFFDB3022),
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.square_favorites_fill),
+          icon: const Icon(CupertinoIcons.heart_fill),
           title: ("Favorite"),
-          activeColorPrimary: CupertinoColors.destructiveRed,
+          activeColorPrimary: Color(0xFFDB3022),
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(CupertinoIcons.profile_circled),
           title: ("Profile"),
-          activeColorPrimary: CupertinoColors.destructiveRed,
+          activeColorPrimary: Color(0xFFDB3022),
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
       ];
@@ -86,13 +86,13 @@ class _bottomNavbarState extends State<bottomNavbar> {
       itemAnimationProperties: const ItemAnimationProperties(
         // Navigation Bar's items animation properties.
         duration: Duration(milliseconds: 200),
-        curve: Curves.ease,
+        curve: Curves.easeIn,
       ),
       screenTransitionAnimation: const ScreenTransitionAnimation(
         // Screen transition animation on change of selected tab.
         animateTabTransition: true,
         curve: Curves.ease,
-        duration: Duration(milliseconds: 200),
+        duration: Duration(milliseconds: 100),
       ),
       navBarStyle:
           NavBarStyle.style11, // Choose the nav bar style with this property.

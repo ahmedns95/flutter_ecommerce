@@ -40,10 +40,16 @@ class _DetailsPageState extends State<DetailsPage> {
         quantity: total++,
         // quantity: dropdownValueQ.toInt(),
       );
-
-      await database.addToCart(addToCartProduct);
-
-      Navigator.pop(context);
+      if (addToCartProduct.productId != widget.product.id) {
+        MainDialog(
+          context: context,
+          title: 'Error',
+          content: 'Couldn\'t add to the cart, please try again!',
+        ).showAlertDialog();
+      } else {
+        await database.addToCart(addToCartProduct);
+        Navigator.pop(context);
+      }
     } catch (e) {
       return MainDialog(
         context: context,

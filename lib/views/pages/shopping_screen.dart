@@ -44,7 +44,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                   CategoryWidget(
                     onTap: () {
                       setState(() {
-                        isEnable = false;
+                        isEnable = true;
                       });
                     },
                     size: size,
@@ -53,9 +53,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                   const Spacer(),
                   CategoryWidget(
                     onTap: () {
-                      setState(() {
-                        isEnable = true;
-                      });
+                      setState(() {});
                     },
                     size: size,
                     title: 'T-Shirts',
@@ -98,31 +96,8 @@ class _ShoppingPageState extends State<ShoppingPage> {
                 },
               ),
             ),
+
             /*SizedBox(
-              height: 360,
-              child: StreamBuilder<List<Product>>(
-                stream: database.pantsCateg(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active) {
-                    final products = snapshot.data;
-                    if (products == null || products.isEmpty) {
-                      return const Center(
-                        child: Text('No data available'),
-                      );
-                    }
-                    return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: products.length,
-                      itemBuilder: (_, index) =>
-                          SoppingListWidget(products: products[index]),
-                    );
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                },
-              ),
-            ),
-            SizedBox(
               height: 300,
               child: StreamBuilder<List<Product>>(
                 stream: database.shirtCateg(),

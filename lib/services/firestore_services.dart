@@ -20,10 +20,10 @@ class FirestoreServices {
 
   Future<void> deleteData({
     required String path,
-    required Map<String, dynamic> data, //added
+    //required Map<String, dynamic> data, //added
   }) async {
     final reference = _fireStore.doc(path);
-    debugPrint('Path of deleting data: $path');
+    debugPrint('Path of deleting data: $path, $reference');
     await reference.delete();
   }
 
@@ -37,7 +37,7 @@ class FirestoreServices {
     return snapshots.map((snapshot) => builder(snapshot.data(), snapshot.id));
   }
 
-// return: collections that's been
+// return: collections that's been founded
   Stream<List<T>> collectionsStream<T>({
     required String path,
     required T Function(Map<String, dynamic>? data, String documentId) builder,

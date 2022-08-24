@@ -7,6 +7,7 @@ import 'package:flutter_ecommerce/views/widgets/cart_item.dart';
 import 'package:flutter_ecommerce/views/widgets/list_item_home.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/empty_cart.dart';
 import '../widgets/fav_list.dart';
 
 class FavoritePage extends StatelessWidget {
@@ -32,8 +33,9 @@ class FavoritePage extends StatelessWidget {
                   final products = snapshot.data;
                   if (products == null || products.isEmpty) {
                     return const Center(
-                      child: Text('Favorite iS Empty'),
-                    );
+                        child: CartEmpty(
+                      title: 'Your Favorite is Empty',
+                    ));
                   }
                   return ListView.builder(
                     scrollDirection: Axis.vertical,

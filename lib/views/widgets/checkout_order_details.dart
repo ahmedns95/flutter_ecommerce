@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecommerce/views/widgets/order_summary_component.dart';
 
-import 'order_summary_component.dart';
+import 'order_summart_component.dart';
 
 class CheckoutOrderDetails extends StatelessWidget {
   const CheckoutOrderDetails({Key? key}) : super(key: key);

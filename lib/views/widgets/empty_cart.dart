@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CartEmpty extends StatelessWidget {
+  final String title;
+
+  const CartEmpty({super.key, required this.title});
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 90),
+      //margin: EdgeInsets.only(top: 90),
       child: Column(
         children: [
           Container(
@@ -19,14 +22,13 @@ class CartEmpty extends StatelessWidget {
               ),
             ),
           ),
-          const Text(
-            'Your Cart is Empty',
-            style: TextStyle(
+          Text(
+            title,
+            style: const TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 15),
         ],
       ),
     );

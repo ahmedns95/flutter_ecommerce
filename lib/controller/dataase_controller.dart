@@ -86,7 +86,7 @@ class FirestoreDatabase implements Database {
   @override
   Future<void> deleteFromCart(CartAtt cart) async => _service.deleteData(
         path: ApiPath.deletFromCart(uid, cart.id),
-        data: cart.toMap(),
+        //data: cart.toMap(),
       );
 
   //Stream - It can deliver one or more value

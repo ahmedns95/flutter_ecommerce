@@ -57,7 +57,10 @@ class _CartPageState extends State<CartPage> {
                   if (snapshot.connectionState == ConnectionState.active) {
                     final cartProducts = snapshot.data;
                     if (cartProducts == null || cartProducts.isEmpty) {
-                      return Center(child: CartEmpty());
+                      return const Center(
+                          child: CartEmpty(
+                        title: 'Your Cart is Empty',
+                      ));
                     }
 
                     return ListView.builder(
