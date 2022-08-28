@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/models/cart.dart';
 import 'package:flutter_ecommerce/services/auth.dart';
+import 'package:flutter_ecommerce/utilities/assets.dart';
 import 'package:flutter_ecommerce/utilities/router.dart';
 import 'package:flutter_ecommerce/utilities/routes.dart';
 import 'package:flutter_ecommerce/views/pages/details_page.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Ecommerce',
         theme: ThemeData(
+          fontFamily: AppAssets.kFontFam,
           scaffoldBackgroundColor: const Color(0xFFE5E5E5),
           primaryColor: Colors.red,
           inputDecorationTheme: InputDecorationTheme(

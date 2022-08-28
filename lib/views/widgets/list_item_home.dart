@@ -18,7 +18,8 @@ class ListItemHome extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isFavorite = false;
     final database = Provider.of<Database>(context);
-
+    final heightSize = MediaQuery.of(context).size.height;
+    final widthSize = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
         Navigator.of(context, rootNavigator: true)
@@ -39,9 +40,9 @@ class ListItemHome extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.0),
                   child: Image.network(
                     product.imgUrl,
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.scaleDown,
+                    width: 200, //widthSize * .3, //
+                    height: 200, //heightSize * .4, //
+                    fit: BoxFit.contain,
                   ),
                 ),
                 Positioned(

@@ -4,7 +4,7 @@ import 'package:flutter_ecommerce/views/widgets/shipping_address_component.dart'
 import 'package:flutter_ecommerce/views/widgets/delivery_method_item.dart';
 import 'package:flutter_ecommerce/controller/dataase_controller.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_ecommerce/views/pages/cart_page.dart';
 import '../../models/delivery_method.dart';
 import '../widgets/checkout_order_details.dart';
 import '../widgets/main_button.dart';
@@ -99,7 +99,7 @@ class ChckoutPage extends StatelessWidget {
                     );
                   }),
               const SizedBox(height: 32.0),
-              CheckoutOrderDetails(),
+              const CheckoutOrderDetails(),
               const SizedBox(height: 64.0),
               MainButton(
                 text: 'Submit Order',

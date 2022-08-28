@@ -37,34 +37,30 @@ class _ShoppingPageState extends State<ShoppingPage> {
             ),
             SizedBox(height: size.height * .019),
             SingleChildScrollView(
-              scrollDirection: Axis.vertical,
+              scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  const Spacer(),
+                  SizedBox(width: size.width * .02),
                   CategoryWidget(
-                    onTap: () {
-                      setState(() {
-                        isEnable = true;
-                      });
-                    },
+                    onTap: () {},
+                    size: size,
+                    title: 'Polo',
+                  ),
+                  SizedBox(width: size.width * .02),
+                  CategoryWidget(
+                    onTap: () {},
                     size: size,
                     title: 'Jackets',
                   ),
-                  const Spacer(),
+                  SizedBox(width: size.width * .02),
                   CategoryWidget(
-                    onTap: () {
-                      setState(() {});
-                    },
+                    onTap: () {},
                     size: size,
                     title: 'T-Shirts',
                   ),
-                  const Spacer(),
+                  SizedBox(width: size.width * .02),
                   CategoryWidget(
-                    onTap: () {
-                      setState(() {
-                        CategoryAtt.shirts;
-                      });
-                    },
+                    onTap: () {},
                     size: size,
                     title: 'Pants',
                   ),

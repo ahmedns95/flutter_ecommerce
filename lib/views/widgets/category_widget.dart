@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/utilities/assets.dart';
 
 class CategoryWidget extends StatelessWidget {
   const CategoryWidget({
@@ -17,7 +18,7 @@ class CategoryWidget extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: size.height * .040,
+        height: size.height * .045,
         width: size.width * .29,
         decoration: const BoxDecoration(
             color: Colors.black,
@@ -25,7 +26,8 @@ class CategoryWidget extends StatelessWidget {
         child: Center(
           child: Text(
             title,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(
+                color: Colors.white, fontFamily: AppAssets.kFontFam),
           ),
         ),
       ),

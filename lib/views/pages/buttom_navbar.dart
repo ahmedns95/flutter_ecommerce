@@ -32,7 +32,7 @@ class _bottomNavbarState extends State<bottomNavbar> {
       return [
         PersistentBottomNavBarItem(
           icon: const Icon(CupertinoIcons.home),
-          title: ("Home"),
+          title: ('Home'),
           activeColorPrimary: Color(0xFFDB3022),
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),

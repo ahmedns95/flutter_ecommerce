@@ -42,12 +42,12 @@ flutter:
   # https://flutter.dev/assets-and-images/#from-packages
 
 
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+    #example:
+  fonts:
+    - family: ABeeZee
+      fonts:
+        - asset: assets/fonts/ABeeZee-Regular.otf
+
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

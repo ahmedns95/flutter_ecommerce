@@ -127,7 +127,7 @@ class _CartPageState extends State<CartPage> {
                         arguments: database,
                       );
                     },
-                    text: 'C H E C K O U T',
+                    text: 'CHECK OUT',
                   ))
                 ],
               ),

@@ -129,11 +129,14 @@ class _DetailsPageState extends State<DetailsPage> {
                 ],
               ),
             ),
-            Image.network(
-              widget.product.imgUrl,
-              height: size.height * 0.5,
-              width: double.infinity,
-              fit: BoxFit.scaleDown,
+            Container(
+              color: Colors.white,
+              child: Image.network(
+                widget.product.imgUrl,
+                height: size.height * 0.5,
+                width: double.infinity,
+                fit: BoxFit.scaleDown,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 10),

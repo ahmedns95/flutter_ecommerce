@@ -6,6 +6,7 @@ import 'package:flutter_ecommerce/views/pages/details_page.dart';
 import 'package:provider/provider.dart';
 import '../../controller/dataase_controller.dart';
 import '../../models/cart_att.dart';
+import '../../utilities/assets.dart';
 import '../../utilities/const.dart';
 import 'main_dialog.dart';
 
@@ -27,7 +28,8 @@ class _CartItemState extends State<CartItem> {
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<Database>(context);
-    final Size size = MediaQuery.of(context).size;
+    double heightSize = MediaQuery.of(context).size.height;
+    double widthSize = MediaQuery.of(context).size.width;
     Future<void> _deleteFromCart(Database database) async {
       try {
         final addToCartProduct = CartAtt(
@@ -57,7 +59,7 @@ class _CartItemState extends State<CartItem> {
     return Column(
       children: [
         Container(
-          height: size.height * 0.14,
+          height: heightSize * 0.15,
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -72,8 +74,8 @@ class _CartItemState extends State<CartItem> {
           child: Row(
             children: <Widget>[
               SizedBox(
-                width: 90,
-                height: size.height * 0.12,
+                width: heightSize * 0.12,
+                height: heightSize * 0.12,
                 child: Image.network(
                   widget.product.imgUrl,
                   fit: BoxFit.scaleDown,
@@ -89,7 +91,9 @@ class _CartItemState extends State<CartItem> {
                       children: <Widget>[
                         Text(
                           widget.product.title,
-                          style: const TextStyle(fontSize: 16),
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
                         ),
                         IconButton(
                             onPressed: () {
@@ -105,7 +109,7 @@ class _CartItemState extends State<CartItem> {
                           style: TextStyle(color: Colors.grey),
                         ),
                         Text(widget.product.color),
-                        const SizedBox(width: 10),
+                        SizedBox(width: widthSize / 10),
                         const Text(
                           'Size: ',
                           style: TextStyle(color: Colors.grey),
@@ -118,40 +122,9 @@ class _CartItemState extends State<CartItem> {
                         IconButton(
                           focusColor: Colors.black,
                           onPressed: () {
-                            StreamBuilder<List<CartAtt>>(
-                              stream: database.cartProduct(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.active) {
-                                  final cartProducts =
-                                      snapshot.data as List<CartAtt>;
-                                  if (cartProducts.isEmpty) {
-                                    return const Center(
-                                      child: Text(''),
-                                    );
-                                  }
-                                  return Text(
-                                    '\$${cartProducts.isEmpty ? cartProducts.map<int>((e) => e.quantity++) : 0}',
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.red,
-                                    ),
-                                  );
-                                } else {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                }
-                              },
-                            );
                             setState(() {
                               widget.product.quantity--;
                             });
-/*
-                              _cartProvider.reductCartItem(
-                            productId,
-                            _cartAttr.price,
-                            _cartAttr.title,
-                            _cartAttr.imageUrl); */
                           },
                           icon: const Icon(
                             CupertinoIcons.minus,
@@ -182,11 +155,6 @@ class _CartItemState extends State<CartItem> {
                             setState(() {
                               widget.product.quantity++;
                             });
-                            /*      _cartProvider.addProductToCart(
-                            productId,
-                            _cartAttr.price,
-                            _cartAttr.title,
-                            _cartAttr.imageUrl); */
                           },
                           icon: const Icon(
                             CupertinoIcons.add,
@@ -194,7 +162,7 @@ class _CartItemState extends State<CartItem> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 40),
+                          padding: EdgeInsets.only(left: widthSize / 15),
                           child: Text(
                             '${(widget.product.price - (widget.product.price * (widget.product.discountValue / 100))) * widget.product.quantity}\$',
                             style: const TextStyle(fontSize: 16),
@@ -205,21 +173,10 @@ class _CartItemState extends State<CartItem> {
                   ],
                 ),
               ),
-              //SizedBox(width: 50),
-              /* Flexible(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 55),
-                  child: Text(
-                    '${(widget.product.price - (widget.product.price * (widget.product.discountValue / 100))) * widget.product.quantity}\$',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ),
-              )*/
             ],
           ),
         ),
-        SizedBox(height: size.height * .01),
+        SizedBox(height: heightSize * .01),
       ],
     );
   }

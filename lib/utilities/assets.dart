@@ -8,4 +8,5 @@ class AppAssets {
       'https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png';
   static const profilePicture =
       'https://tricky-photoshop.com/wp-content/uploads/2017/08/final-1.png';
+  static const kFontFam = 'ABeeZee';
 }
