@@ -1,6 +1,6 @@
 # flutter_ecommerce
 
-A new Flutter project.
+flutter e commerce app using firebase 
 
 ## Getting Started
 
