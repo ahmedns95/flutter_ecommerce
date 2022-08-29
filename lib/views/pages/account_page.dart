@@ -63,9 +63,10 @@ class AccountPage extends StatelessWidget {
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         Text(
-                          model.email.isEmpty
+                          /*model.email.isEmpty
                               ? "info@hotmail.com"
-                              : model.email.toString(),
+                              : */
+                          model.email.toString(),
                           style:
                               Theme.of(context).textTheme.subtitle2?.copyWith(
                                     color: Colors.grey,

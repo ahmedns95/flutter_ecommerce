@@ -89,29 +89,32 @@ class FavoritePage extends StatelessWidget {
                 ],
               ),
             ),
-            StreamBuilder<List<FavoriteAtt>>(
-              stream: database.favoriteProduct(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.active) {
-                  final products = snapshot.data;
-                  if (products == null || products.isEmpty) {
-                    return const Center(
-                        child: CartEmpty(
-                      title: 'Your Favorite is Empty',
-                    ));
+            SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: StreamBuilder<List<FavoriteAtt>>(
+                stream: database.favoriteProduct(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    final products = snapshot.data;
+                    if (products == null || products.isEmpty) {
+                      return const Center(
+                          child: CartEmpty(
+                        title: 'Your Favorite is Empty',
+                      ));
+                    }
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: products.length,
+                      shrinkWrap: true,
+                      itemBuilder: (_, index) => FavListWidget(
+                        products: products[index],
+                      ),
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
                   }
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: products.length,
-                    shrinkWrap: true,
-                    itemBuilder: (_, index) => FavListWidget(
-                      products: products[index],
-                    ),
-                  );
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
-              },
+                },
+              ),
             ),
           ],
         ),

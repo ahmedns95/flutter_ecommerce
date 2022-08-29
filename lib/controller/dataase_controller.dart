@@ -96,6 +96,10 @@ class FirestoreDatabase implements Database {
         builder: (data, documentId) => CartAtt.fromMap(data!, documentId),
       );
 
+/*  getTotal() => cartProduct
+      .fold(0.0,
+          (double prev, element) => prev + (element.price * element.amount))
+      .toStringAsFixed(2);*/
   @override
   Future<void> addToFavorite(FavoriteAtt fav) async => _service.setData(
         path: ApiPath.addToFav(uid, fav.id),

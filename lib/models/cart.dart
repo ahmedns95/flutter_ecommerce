@@ -1,13 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/models/cart_att.dart';
-import 'package:flutter_ecommerce/models/product.dart';
-import 'package:provider/provider.dart';
-
-import '../controller/dataase_controller.dart';
 
 class Cart with ChangeNotifier {
-  Map<String, CartAtt> _cartItems = {};
+  final Map<String, CartAtt> _cartItems = {};
 
   int price = 00;
   Map<String, CartAtt> get getCartItem {

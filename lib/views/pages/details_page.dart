@@ -40,16 +40,9 @@ class _DetailsPageState extends State<DetailsPage> {
         quantity: total++,
         // quantity: dropdownValueQ.toInt(),
       );
-      if (addToCartProduct.productId != widget.product.id) {
-        MainDialog(
-          context: context,
-          title: 'Error',
-          content: 'Couldn\'t add to the cart, please try again!',
-        ).showAlertDialog();
-      } else {
-        await database.addToCart(addToCartProduct);
-        Navigator.pop(context);
-      }
+
+      await database.addToCart(addToCartProduct);
+      Navigator.pop(context);
     } catch (e) {
       return MainDialog(
         context: context,
@@ -78,7 +71,8 @@ class _DetailsPageState extends State<DetailsPage> {
       return MainDialog(
         context: context,
         title: 'Error',
-        content: 'Couldn\'t add to the fav, please try again!',
+        content:
+            'Couldn\'t add to the fav, please try again! \$${e.toString()}',
       ).showAlertDialog();
     }
   }
@@ -171,48 +165,6 @@ class _DetailsPageState extends State<DetailsPage> {
                           },
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      /*Expanded(
-                        flex: 1,
-                        child: DropDownMenuComponent(
-                          items: const [
-                            '1',
-                            '2',
-                            '3',
-                            '4',
-                            '5',
-                            '6',
-                            '7',
-                            '8',
-                            '9',
-                            '10'
-                          ],
-                          hint: 'Q',
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              dropdownValueQ = newValue! as int;
-                            });
-                          },
-                        ),
-                      ),*/
-
-                      /* Expanded(
-                        flex: 1,
-                        child: DropDownMenuComponent(
-                          items: const [
-                            '1',
-                            '2',
-                            '3',
-                            '4',
-                          ],
-                          hint: 'Quantity',
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              dropdownValueQ = newValue! as int;
-                            });
-                          },
-                        ),
-                      ),*/
                       const SizedBox(width: 10),
                       Align(
                         alignment: Alignment.centerRight,

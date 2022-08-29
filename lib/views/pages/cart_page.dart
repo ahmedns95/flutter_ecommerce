@@ -120,15 +120,16 @@ class _CartPageState extends State<CartPage> {
                     height: size.height * .02,
                   ),
                   Center(
-                      child: MainButton(
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true).pushNamed(
-                        AppRoutes.checkoutPageRoutes,
-                        arguments: database,
-                      );
-                    },
-                    text: 'CHECK OUT',
-                  ))
+                    child: MainButton(
+                      onTap: () {
+                        Navigator.of(context, rootNavigator: true).pushNamed(
+                          AppRoutes.checkoutPageRoutes,
+                          arguments: database,
+                        );
+                      },
+                      text: 'CHECK OUT',
+                    ),
+                  ),
                 ],
               ),
             ),
